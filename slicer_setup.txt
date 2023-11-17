@@ -1,0 +1,60 @@
+Bed Dimensions:
+X0 - X226
+Y0 - Y224
+
+These are 'reduced' seeing the endstops are now -ve numbers. But the X0/Y0
+positions are set to be a few mm onto the Bed, and so are the X & Y Max
+values (a few mm over the bed).
+It makes more sense that the 'visible' bed runs from 0 - Max, and any
+positions off the bed are a -ve number.
+
+To set this up in Klipper, the printer.cfg has [stepper_ ] position_min and 
+position_endstop both set to the the same negative number.
+The maximums in the printer.cfg are what the printer CAN move to, but in the
+slicer you limit those to only have maximums that remain over the printable
+bed.
+
+
+
+Start and End G-Codes:
+
+Anything 'printer specific' is done in the Klipper printer.cfg START_PRINT 
+macro and END_PRINT macro. Basically not much at all needs to be done in 
+the Slicer start and End G-Code scripts.
+By doing this, a sliced model is pretty "vanilla" and can be used on many 
+other printers.
+
+This is for PrusaSlicer, but you can work out the slight changes that other 
+slicers will need.
+
+;
+; --------------------------
+; PrusaSlicer "Start G-Code"
+; --------------------------
+;
+M104 S0
+M140 S0
+START_PRINT BED_TEMP=[first_layer_bed_temperature] HOTEND_TEMP=[first_layer_temperature[initial_extruder]]
+
+;
+; ---------------------------------
+; PrusaSlicer END of "Start G-Code"
+; ---------------------------------
+; 
+
+
+
+
+;
+; ------------------------
+; PrusaSlicer "End G-code"
+; ------------------------
+;
+END_PRINT      ; Klipper end macro
+;
+; -------------------------------
+; PrusaSlicer END of "End G-code"
+; -------------------------------
+;
+
+
